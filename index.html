@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi San Valentín?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <img src="images/pregunta.jpg" alt="¿Quieres ser mi San Valentín?" class="main-image">
+            <h1>¿Quieres ser mi San Valentín?</h1>
+            <div class="buttons">
+                <button id="btn-si" class="btn btn-yes">Sí</button>
+                <button id="btn-no" class="btn btn-no">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('btn-si').addEventListener('click', function() {
+            window.location.href = 'respuesta-si.html';
+        });
+        
+        document.getElementById('btn-no').addEventListener('click', function(e) {
+            e.preventDefault();
+            moverBotonNo();
+        });
+        
+        function moverBotonNo() {
+            const btnNo = document.getElementById('btn-no');
+            const buttonsContainer = document.querySelector('.buttons');
+            
+            // Forzar que el contenedor de botones tenga posición relativa
+            if (buttonsContainer.style.position !== 'relative') {
+                buttonsContainer.style.position = 'relative';
+            }
+            
+            // Obtener dimensiones del contenedor de botones
+            const containerRect = buttonsContainer.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+            
+            // Calcular área segura dentro del contenedor de botones
+            const safeWidth = containerRect.width - btnRect.width - 10;
+            const safeHeight = containerRect.height - btnRect.height - 10;
+            
+            // Generar posición aleatoria dentro del área segura
+            const randomX = Math.random() * Math.max(0, safeWidth);
+            const randomY = Math.random() * Math.max(0, safeHeight);
+            
+            // Aplicar nueva posición absoluta relativa al contenedor de botones
+            btnNo.style.position = 'absolute';
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+            btnNo.style.zIndex = '10';
+            
+            // Añadir animación suave
+            btnNo.style.transition = 'all 0.2s ease';
+        }
+        
+        // Prevenir que el botón se salga del contenedor al redimensionar la ventana
+        window.addEventListener('resize', function() {
+            const btnNo = document.getElementById('btn-no');
+            // Resetear posición si es necesario
+            if (btnNo.style.position === 'absolute') {
+                btnNo.style.position = 'relative';
+                btnNo.style.left = 'auto';
+                btnNo.style.top = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
